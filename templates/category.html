@@ -1,0 +1,48 @@
+{% extends 'layouts/base.html' %}
+{% load static %}
+{% block content %}
+
+
+    <section class="site-section">
+        <div class="container">
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <h2 class="mb-4">Category: {{ category.name }}</h2>
+                </div>
+            </div>
+            <div class="row blog-entries">
+                <div class="col-md-12 col-lg-8 main-content">
+                    <div class="row mb-5 mt-5">
+                        <div class="col-md-12">
+                            {% for post in cat_posts %}
+                                <div class="post-entry-horzontal">
+                                    <a href="/blog/{{ post.id }}">
+                                        <div class="image element-animate" data-animate-effect="fadeIn"
+                                             style="background-image: url({{ post.image.url }});"></div>
+                                        <span class="text">
+<div class="post-meta">
+<span class="category">{{ post.category.name }}</span>
+<span class="mr-2">March 15, 2018 </span> &bullet;
+<span class="ml-2"><span class="fa fa-comments"></span> 3</span>
+</div>
+<h2>There’s a Cool New Way for Men to Wear Socks and Sandals</h2>
+</span>
+                                    </a>
+                                </div>
+                            {% endfor    %}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 text-center">
+                        </div>
+                    </div>
+                </div>
+
+                {% include 'layouts/sidebar.html' %}
+
+            </div>
+        </div>
+    </section>
+
+
+{% endblock %}

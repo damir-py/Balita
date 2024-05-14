@@ -1,0 +1,32 @@
+{% extends 'layouts/base.html' %}
+{% load static %}
+{% block content %}
+
+
+
+    <section class="site-section pt-5">
+        <div class="container">
+            <div class="row">
+                {% for post in posts %}
+                    <div class="col-md-6 col-lg-4">
+                        <a href="/blog/{{ post.id }}" class="a-block d-flex align-items-center height-md"
+                           style="background-image: url({{ post.image.url }}); ">
+                            <div class="text">
+                                <div class="post-meta">
+                                    <span class="category">{{ post.category.name }}</span>
+                                    {% for tag in post.tags.all %}
+                                        <span class="tags">{{ tag.name }} | </span>
+                                    {% endfor %}
+                                    <span class="mr-2">{{ post.created_at.date }}</span> &bullet;
+                                    <span class="ml-2"><span class="fa fa-comments"></span> 3</span>
+                                </div>
+                                <h3>{{ post.title }}</h3>
+                            </div>
+                        </a>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+{% endblock %}

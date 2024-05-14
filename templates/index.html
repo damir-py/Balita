@@ -1,0 +1,143 @@
+{% extends 'layouts/base.html' %}
+{% load static %}
+{% block content %}
+
+
+    <section class="site-section pt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="owl-carousel owl-theme home-slider">
+                        {% for post in banners %}
+                            <div>
+                                <a href="blog/{{ post.id }}/?cat={{ post.category.id }}"
+                                   class="a-block d-flex align-items-center height-lg"
+                                   style="background-image: url({{ post.image.url }}); ">
+                                    <div class="text half-to-full">
+                                        <div class="post-meta">
+                                            <span class="category">{{ post.category.name }}</span>
+                                            <span class="mr-2">{{ post.created_at.date }} </span> &bullet;
+                                            <span class="ml-2"><span class="fa fa-comments"></span> 3</span>
+                                        </div>
+                                        <h3>{{ post.name }}</h3>
+                                        <p>{{ post.subject }}</p>
+                                    </div>
+                                </a>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                {% for post in banners %}
+                    <div class="col-md-6 col-lg-4">
+                        <a href="blog/{{ post.id }}/?cat={{ post.category.id }}"
+                           class="a-block d-flex align-items-center height-md"
+                           style="background-image: url({{ post.image.url }}); ">
+                            <div class="text">
+                                <div class="post-meta">
+                                    <span class="category">{{ post.category.name }}</span>
+                                    <span class="mr-2">{{ post.created_at.date }}</span> &bullet;
+                                    <span class="ml-2"><span class="fa fa-comments"></span> 3</span>
+                                </div>
+                                <h3>{{ post.title }}</h3>
+                            </div>
+                        </a>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+    <section class="site-section py-sm">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h2 class="mb-4">All posts :</h2>
+                </div>
+            </div>
+            <div class="row blog-entries">
+                <div class="col-md-12 col-lg-8 main-content">
+                    <div class="row">
+                        {% for first in posts_page %}
+                            <div class="col-md-6">
+                                <a href="blog/{{ first.id }}/?cat={{ first.category.id }}"
+                                   class="blog-entry element-animate" data-animate-effect="fadeIn">
+                                    <img src="{{ first.image.url }}" alt="Image placeholder">
+                                    <div class="blog-content-body">
+                                        <div class="post-meta">
+                                            <span class="category">{{ first.category.name }}</span>
+                                            <span class="mr-2">{{ first.created_at.date }}</span> &bullet;
+                                            <span class="ml-2"><span class="fa fa-comments"></span> 3</span>
+                                        </div>
+                                        <h2>{{ first.title }}</h2>
+                                    </div>
+                                </a>
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 text-center">
+                            <nav aria-label="Page navigation" class="text-center">
+                                <ul class="pagination">
+                                    {% if posts_page.has_previous %}
+                                        <li class="page-item active"><a class="page-link"
+                                                                         href="?page={{ posts_page.previous_page_number }}">Prev</a>
+{#                                        {% else %}#}
+{#                                        <li class="page-item"><a class="page-link"#}
+{#                                                                         href="?page={{ posts_page.previous_page_nuber }}">Prev</a>#}
+
+                                        </li>
+                                    {% endif %}
+                                    {% for page in posts_page.paginator.page_range %}
+                                        {% if post_page.number == page %}
+                                            <li class="page-item active"><a class="page-link"
+                                                                            href="?page={{ page }}">{{ page }}</a>
+                                            </li>
+                                        {% else %}
+                                            <li class="page-item "><a class="page-link"
+                                                                     href="?page={{ page }}">{{ page }}</a></li>
+                                        {% endif %}
+                                    {% endfor %}
+                                    {% if posts_page.has_next %}
+                                        <li class="page-item active"><a class="page-link"
+                                                                 href="?page={{ posts_page.next_page_number }}">Next</a>
+                                        </li>
+                                    {% endif %}
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                    <div class="row mb-5 mt-5">
+                        <div class="col-md-12">
+                            <h2 class="mb-4">More viewed Posts</h2>
+                        </div>
+                        <div class="col-md-12">
+                            {% for pop in popular_posts %}
+                                <div class="post-entry-horzontal">
+                                    <a href="blog/{{ pop.id }}">
+                                        <div class="image element-animate" data-animate-effect="fadeIn"
+                                             style="background-image: url({{ pop.image.url }});"></div>
+                                        <span class="text">
+    <div class="post-meta">
+    <span class="category">{{ pop.category.name }}</span>
+    <span class="mr-2"
+                                            {{ pop.created_at }}</span> &bullet;
+                                        <span class="ml-2"><span class="fa fa-comments"></span> 3</span>
+                                </div>
+                                <h2>{{ pop.title }}</h2>
+                                </span>
+                                </a>
+                                </div>
+                            {% endfor %}
+                    </div>
+                </div>
+            </div>
+            <!--there is sidebar-->
+            {% include 'layouts/sidebar.html' %}
+            <!--end sidebar-->
+        </div>
+        </div>
+    </section>
+
+{% endblock %}
