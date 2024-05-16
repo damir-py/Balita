@@ -11,7 +11,7 @@
                     <div class="post-meta">
                         <span class="category">{{ post.category.name }}</span>
                         <span class="mr-2">{{ post.created_at.date }}</span> &bullet;
-                        <span class="ml-2"><span class="fa fa-comments"></span> 3</span>
+                        <span class="ml-2"><span class="fa fa-comments"></span> {{ post.comments_count }}</span>
                     </div>
                     <div class="post-content-body">
                         <div class="row mb-5">
@@ -93,7 +93,7 @@
                             <div class="post-meta">
                                 <span class="category">{{ cat.category.name }}</span>
                                 <span class="mr-2">{{ cat.created_at }}</span> &bullet;
-                                <span class="ml-2"><span class="fa fa-comments"></span> 3</span>
+                                <span class="ml-2"><span class="fa fa-comments"></span> {{ cat.comments_count }}</span>
                             </div>
                             <h3>{{ cat.title }}</h3>
                         </div>

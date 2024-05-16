@@ -22,8 +22,8 @@ def home_view(request):
         'banners': posts[:3],
         'categories': categories,
         'tags': tags,
-        'posts_page': posts.order_by('created_at'),
-        'popular_posts': posts.order_by('-views_count')[:4],
+        # 'posts_page': posts.order_by('created_at'),
+        'popular_posts': posts.order_by('-comments_count')[:3],
         'home': 'active',
         'posts_page': page_obj.get_page(page),
     }
@@ -41,6 +41,7 @@ def category_view(request):
         'cat_posts': posts.filter(category_id=cat),
         'posts': posts,
         'latest_posts': posts.order_by('-created_at')[:3],
+        'popular_posts': posts.order_by('-comments_count')[:3],
         'tags': tags,
         'categories': categories,
     }
@@ -58,6 +59,7 @@ def about_view(request):
         'about': 'active',
         'categories': categories,
         'latest_posts': posts.order_by('-created_at')[:3],
+        'popular_posts': posts.order_by('-comments_count')[:3],
         'tags': tags,
         'posts_page': page_obj.get_page(page)
     }
@@ -90,6 +92,7 @@ message: {obj.message}
         'contact': 'active',
         'categories': categories,
         'latest_posts': posts.order_by('-created_at')[:3],
+        'popular_posts': posts.order_by('-comments_count')[:3],
         'tags': tags,
     }
 
@@ -103,6 +106,8 @@ def blog_detail_view(request, pk):
         obj = Comment.objects.create(post=post, name=data['name'], email=data['email'], message=data['message'],
                                      post_id=pk)
         obj.save()
+        post.comments_count += 1
+        post.save(update_fields=['comments_count'])
         return redirect(f'/blog/{pk}/')
 
     data = request.GET
@@ -121,6 +126,7 @@ def blog_detail_view(request, pk):
         'comments': comments,
         'comments_count': len(comments),
         'latest_posts': posts.order_by('-created_at')[:3],
+        'popular_posts': posts.order_by('-comments_count')[:3],
         'tags': tags,
     }
     return render(request, 'blog-single.html', context=contx)
@@ -133,7 +139,7 @@ def tags_view(request, pk):
     context = {
         'posts': posts.filter(tags__id=pk),
         'categories': categories,
-        'latest_posts': posts.order_by('-created_at')[:3],
+        'latest_posts': posts.order_by('-comments_count')[:3],
     }
     return render(request, 'tags.html', context=context)
 
