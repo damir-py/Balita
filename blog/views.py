@@ -151,18 +151,15 @@ def search_view(request):
         query = data['query']
         return redirect(f'/search?q={query}')
     query = request.GET.get('q')
+    posts = Post.objects.filter(is_published=True)
     if query is not None and len(query) >= 1:
-        posts = Post.objects.filter(is_published=True, title__icontains=query, description__icontains=query)
-    else:
-        posts = Post.objects.filter(is_published=True)
+        posts = posts.filter(title__icontains=query, description__icontains=query)
 
-    ls_post = Post.objects.filter(is_published=True)
-
-    d = {'cat_posts': posts,
-         'categories': Category.objects.all(),
-         'latest_posts': ls_post.order_by('views_count')[:3],
-         'tags': tags,
-
-         }
+    d = {
+        'cat_posts': posts,
+        'categories': Category.objects.all(),
+        'latest_posts': posts.order_by('views_count')[:3],
+        'tags': tags,
+    }
 
     return render(request, 'category.html', context=d)
