@@ -11,6 +11,12 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
 from pathlib import Path
+import os
+
+from ckeditor_demo.settings import DATABASES
+from dotenv import load_dotenv
+
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -22,9 +28,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-ok2w2+=duf=#47vvw1*l%bvtn0h^ml(v^a&_(peg6wwsn-zs)9'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '127.0.0.1').split(',')
 
 # Application definition
 
@@ -75,19 +81,21 @@ WSGI_APPLICATION = 'config.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
+# DATABASES = {
+# 'default': {
+#     'ENGINE': 'django.db.backends.sqlite3',
+#     'NAME': BASE_DIR / 'db.sqlite3',
+# }
+# }
+
 DATABASES = {
-    # 'default': {
-    #     'ENGINE': 'django.db.backends.sqlite3',
-    #     'NAME': BASE_DIR / 'db.sqlite3',
-    # }
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'damir_balita',
-        'HOST': 'dodb-do-user-17113779-0.a.db.ondigitalocean.com',
-        'USER': 'doadmin',
-        'PASSWORD': 'AVNS_J5A-szb7Q3GiIqAXzw6',
-        'PORT': '25060'
-
+        'NAME': os.getenv('DB_NAME', 'default'),
+        'HOST': os.getenv('DB_HOST', 'localhost'),
+        'USER': os.getenv('DB_USER', 'default'),
+        'PASSWORD': os.getenv('DB_PASSWORD', 'default'),
+        'PORT': os.getenv('DB_PORT', '5432'),
     }
 }
 
